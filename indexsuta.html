@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPal Clone</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar (Top Menu) */
+        .navbar {
+            background-color: #003087;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar img {
+            height: 30px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content */
+        .container {
+            width: 700px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #greeting {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* PayPal Balance */
+        .paypal-balance {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .paypal-balance h2 {
+            font-size: 16px;
+            color: #003087;
+            margin: 0 0 5px;
+        }
+
+        .balance {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        /* Buttons */
+        .transfer-btn, .send-btn {
+            background-color: #0070ba;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .transfer-btn:hover, .send-btn:hover {
+            background-color: #005ea6;
+        }
+
+        /* Inputs */
+        .input-box {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar (PayPal Header) -->
+    <div class="navbar">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal Logo">
+        <div class="nav-links">
+            <a href="#">Summary</a>
+            <a href="#">Activity</a>
+            <a href="#">Send & Request</a>
+            <a href="#">Wallet</a>
+            <a href="#">Offers</a>
+            <a href="#">Help</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Name Input -->
+        <div class="name-input">
+            <input type="text" class="input-box" id="nameInput" placeholder="Enter your name">
+            <button class="transfer-btn" onclick="submitName()">Continue</button>
+        </div>
+
+        <!-- Greeting -->
+        <h2 id="greeting" style="display: none;">Good afternoon, <span id="username">User</span></h2>
+
+        <!-- PayPal Balance Section -->
+        <div class="paypal-balance" style="display: none;">
+            <h2>PayPal Balance</h2>
+            <p class="balance" id="balance">$10,000</p>
+            <button class="transfer-btn">Transfer Money</button>
+        </div>
+
+        <!-- Send Money Section -->
+        <div class="money-input" style="display: none;">
+            <h2>Send Money</h2>
+            <input type="text" class="input-box" id="recipientInput" placeholder="Enter recipient's username">
+            <input type="number" class="input-box" id="amountInput" placeholder="Enter amount to send">
+            <button class="send-btn" onclick="sendMoney()">Send Money</button>
+        </div>
+
+    </div>
+
+    <script>
+        let balance = 10000.00; // Initial balance
+
+        function submitName() {
+            var name = document.getElementById("nameInput").value;
+            if (name) {
+                document.getElementById("username").innerText = name;
+                document.querySelector(".name-input").style.display = "none";
+                document.getElementById("greeting").style.display = "block";
+                document.querySelector(".paypal-balance").style.display = "block";
+                document.querySelector(".money-input").style.display = "block";
+            }
+        }
+
+        function sendMoney() {
+            let recipient = document.getElementById("recipientInput").value;
+            let amount = parseFloat(document.getElementById("amountInput").value);
+
+            if (recipient.length < 3) {
+                alert("Please enter a valid username.");
+                return;
+            }
+
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid amount.");
+                return;
+            }
+
+            if (amount > balance) {
+                alert("Insufficient funds.");
+                return;
+            }
+
+            balance -= amount;
+            document.getElementById("balance").innerText = `$${balance.toFixed(2)}`;
+            alert(`You sent $${amount.toFixed(2)} to @${recipient} successfully!`);
+            document.getElementById("amountInput").value = "";
+            document.getElementById("recipientInput").value = "";
+        }
+    </script>
+
+</body>
+</html>
